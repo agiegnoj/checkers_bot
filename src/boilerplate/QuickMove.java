@@ -3,7 +3,7 @@ package boilerplate;
 public class QuickMove {
 
     int[] getQuickMove(Board board) {
-        Move fallback = null;
+        
         for (Piece p : board.getBotPieces()) {
             int x = p.getXCoordinate();
             int y = p.getYCoordinate();
