@@ -26,7 +26,7 @@ public class GameFlowGUI {
     }
 
     public GameFlowGUI() {
-        alphaBeta = new AlphaBetaSearch(8);
+        alphaBeta = new AlphaBetaSearch(6); // default depth of 6 for solid casual games
         Random r = new Random();
         int num = r.nextInt(2);
         playerColor = (num == 1) ? 'b' : 'w';
