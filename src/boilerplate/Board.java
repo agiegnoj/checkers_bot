@@ -1,7 +1,9 @@
 package boilerplate;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Board {
@@ -99,6 +101,30 @@ public class Board {
     }
     
       
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.deepHashCode(board);
+        result = prime * result + Objects.hash(botColor, botPieces, captureSequencePiece, playerColor, playerPieces);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Board other = (Board) obj;
+        return Arrays.deepEquals(board, other.board) && botColor == other.botColor
+                && Objects.equals(botPieces, other.botPieces)
+                && Objects.equals(captureSequencePiece, other.captureSequencePiece) && playerColor == other.playerColor
+                && Objects.equals(playerPieces, other.playerPieces);
+    }
 
     public boolean capturePossible(Piece currentPiece, boolean isBot) {
         int x = currentPiece.getXCoordinate();

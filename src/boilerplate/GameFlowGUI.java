@@ -19,7 +19,6 @@ public class GameFlowGUI {
     private JPanel panel;
     private JButton[][] buttons;
     private Piece selectedPiece;
-    private QuickMove qm;
     private JButton restartButton; 
 
     public static void main(String[] args) {
@@ -27,8 +26,7 @@ public class GameFlowGUI {
     }
 
     public GameFlowGUI() {
-        alphaBeta = new AlphaBetaSearch(6);
-        qm = new QuickMove();
+        alphaBeta = new AlphaBetaSearch(8);
         Random r = new Random();
         int num = r.nextInt(2);
         playerColor = (num == 1) ? 'b' : 'w';
@@ -158,15 +156,17 @@ public class GameFlowGUI {
         while (true) {
             int[] move = alphaBeta.getBestMove(board.getBoardDeepCopy());
 
-            if (move == null) {
-                quickMove();
-            } else {
+            if (move != null) {
                 Piece currentPiece = board.getPiece(move[0], move[1]);
                 if (board.validMove(currentPiece, move[2], move[3])) {
                     board.move(currentPiece, move[2], move[3]);
-                } else {
+                }else {
                     quickMove();
                 }
+            } else {
+                
+                  quickMove();
+                
             }
 
             updateBoardDisplay();
@@ -180,7 +180,7 @@ public class GameFlowGUI {
     }
 
     private void quickMove() {
-        int[] move = qm.getQuickMove(board.getBoardDeepCopy());
+        int[] move = alphaBeta.quickMove(board.getBoardDeepCopy());
         if (move != null) {
             Piece currentPiece = board.getPiece(move[0], move[1]);
             board.move(currentPiece, move[2], move[3]);
