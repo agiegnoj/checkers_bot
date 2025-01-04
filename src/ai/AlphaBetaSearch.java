@@ -105,7 +105,7 @@ public class AlphaBetaSearch {
                                     
                         if (boardCopy.validMove(p, newX, newY)) {
                             boardCopy.move(p, newX, newY);
-                            if (board.getCaptureSequencePiece() == null) {
+                            if (boardCopy.getCaptureSequencePiece() == null) {
                                 value = Math.max(value, alphaBeta(boardCopy, depth - 1, alpha, beta, false));
                             }else {
                                 value = Math.max(value, alphaBeta(boardCopy, depth -1 , alpha, beta, true));
