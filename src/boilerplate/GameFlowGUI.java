@@ -26,7 +26,49 @@ public class GameFlowGUI {
     }
 
     public GameFlowGUI() {
-        alphaBeta = new AlphaBetaSearch(6); // default depth of 6 for solid casual games
+        selectDifficulty();
+    }
+    
+    void selectDifficulty(){
+        frame = new JFrame("Checkers Bot");
+        frame.setSize(800, 800);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel tempPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+        JButton easyButton = new JButton("Easy");
+        JButton mediumButton = new JButton("Medium");
+        JButton hardButton = new JButton("Hard");
+        
+        easyButton.setBackground(Color.WHITE);
+        easyButton.setFont(new Font("Arial", Font.PLAIN, 30));
+        mediumButton.setBackground(Color.WHITE);
+        mediumButton.setFont(new Font("Arial", Font.PLAIN, 30));
+        hardButton.setBackground(Color.WHITE);
+        hardButton.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        easyButton.addActionListener(e -> initialize(4));
+        mediumButton.addActionListener(e -> initialize(6));
+        hardButton.addActionListener(e -> initialize(8));
+
+        tempPanel.add(easyButton);
+        tempPanel.add(mediumButton);
+        tempPanel.add(hardButton);
+
+        frame.add(tempPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
+        
+    }
+    
+    void initialize (int depth) {
+        
+        frame = new JFrame("Checkers Bot");
+        frame.setSize(800, 800);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        alphaBeta = new AlphaBetaSearch(depth);
         Random r = new Random();
         int num = r.nextInt(2);
         playerColor = (num == 1) ? 'b' : 'w';
@@ -40,13 +82,8 @@ public class GameFlowGUI {
 
         board = new Board(playerColor, botColor);
         
-        frame = new JFrame("Checkers Bot");
-        frame.setSize(800, 800);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         panel = new JPanel();
-        panel.setLayout(new GridLayout(9, 9)); // Extra row for the restart button
+        panel.setLayout(new GridLayout(9, 9)); 
         
         buttons = new JButton[8][8];
         
@@ -56,6 +93,9 @@ public class GameFlowGUI {
         restartButton = new JButton("Restart");
         restartButton.setPreferredSize(new Dimension(170, 50));
         restartButton.setLocation(700, 350);
+        restartButton.setBackground(Color.WHITE);
+        restartButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        
         
         restartButton.addActionListener(new ActionListener() {
             @Override
@@ -71,6 +111,7 @@ public class GameFlowGUI {
         if (!playersTurn) {
             botPlay();
         }
+        
     }
 
     private void initializeBoard() {
@@ -86,7 +127,6 @@ public class GameFlowGUI {
                 int x = i;
                 int y = j;
 
-                // Action listeners for player input
                 buttons[i][j].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -122,7 +162,6 @@ public class GameFlowGUI {
                     botPlay();
                 }
             } else {
-                // Invalid move, deselect the piece
                 selectedPiece = null;
                 updateBoardDisplay();
             }
@@ -133,7 +172,7 @@ public class GameFlowGUI {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 buttons[i][j].setBackground(Color.GRAY);
-                buttons[i][j].setText(""); // Reset button text
+                buttons[i][j].setText(""); 
                 buttons[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
                 Piece piece = board.getPiece(i, j);
@@ -171,7 +210,6 @@ public class GameFlowGUI {
 
             updateBoardDisplay();
 
-            // Check if bot is in capture sequence
             if (board.getCaptureSequencePiece() == null) {
                 break;
             }
@@ -188,14 +226,7 @@ public class GameFlowGUI {
     }
 
     private void restartGame() {
-        // Reset the board state
-        board = new Board(playerColor, botColor);
-        selectedPiece = null;
-        playersTurn = (playerColor == 'b'); 
-        updateBoardDisplay();
-        if (!playersTurn) {
-            botPlay();
-        }
+        selectDifficulty();
     }
 }
 
